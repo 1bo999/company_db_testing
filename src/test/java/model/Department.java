@@ -2,11 +2,19 @@ package model;
 
 public class Department {
 
-    /** departments tablosunda dept_no, dept_name
+    /**
+     * pgAdminde mutlaka tablolari cagirip bakmaniz lazim
+     * burani anlamak icin 👺
+     *
+     * departments tablosunda dept_no, dept_name
      * String olarak tutuluyor. buna pgadminden
      * baka bilirsiniz
      */
+
+    // tabloda bu 'd009' ⚠️max 4 karakter
     private String dept_no;
+
+    // tabloda bu 'Customer Service'
     private String name;
 
 
