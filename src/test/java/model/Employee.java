@@ -1,20 +1,22 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Employee {
 
     private int emp_no;
-    private String birth_date;
+    private LocalDate birth_date;
     private String firstName;
     private String lastName;
-    private String gender; //⚠️ sadece BUYUK!! M ve ya F cins icin
-    private String hire_date;
-    private String dept_no; // misal 'd009' ⚠️max 4 karakter
+    private String gender;
+    private LocalDate hire_date;
+    private String dept_no;
 
     public Employee() {
     }
 
     // bunu kullaniyoruz cunki canim boyle istedi
-    public Employee(int emp_no, String birth_date, String firstName, String lastName, String gender, String hire_date, String dept_no) {
+    public Employee(int emp_no, LocalDate birth_date, String firstName, String lastName, String gender, LocalDate hire_date, String dept_no) {
         this.emp_no = emp_no;
         this.birth_date = birth_date;
         this.firstName = firstName;
@@ -32,11 +34,11 @@ public class Employee {
         this.emp_no = emp_no;
     }
 
-    public String getBirth_date() {
+    public LocalDate getBirth_date() {
         return birth_date;
     }
 
-    public void setBirth_date(String birth_date) {
+    public void setBirth_date(LocalDate birth_date) {
         this.birth_date = birth_date;
     }
 
@@ -64,11 +66,11 @@ public class Employee {
         this.gender = gender;
     }
 
-    public String getHire_date() {
+    public LocalDate getHire_date() {
         return hire_date;
     }
 
-    public void setHire_date(String hire_date) {
+    public void setHire_date(LocalDate hire_date) {
         this.hire_date = hire_date;
     }
 
@@ -82,13 +84,13 @@ public class Employee {
 
     @Override
     public String toString() {
-        return "Employees{" +
+        return "Employee{" +
                 "emp_no=" + emp_no +
-                ", birth_date='" + birth_date + '\'' +
+                ", birth_date=" + birth_date +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", gender='" + gender + '\'' +
-                ", hire_date='" + hire_date + '\'' +
+                ", hire_date=" + hire_date +
                 ", dept_no='" + dept_no + '\'' +
                 '}';
     }
