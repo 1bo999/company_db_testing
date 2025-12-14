@@ -4,8 +4,9 @@ import dao.DepartmentDao;
 import model.Department;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import tests.Base.BaseTest;
 
-public class DepartmentTest extends BaseTest{
+public class DepartmentTest extends BaseTest {
 
     private DepartmentDao departmentDao;
 
