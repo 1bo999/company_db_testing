@@ -15,7 +15,6 @@ public class Employee {
     public Employee() {
     }
 
-    // bunu kullaniyoruz cunki canim boyle istedi
     public Employee(int emp_no, LocalDate birth_date, String firstName, String lastName, String gender, LocalDate hire_date, String dept_no) {
         this.emp_no = emp_no;
         this.birth_date = birth_date;
