@@ -37,5 +37,7 @@ public class TC_01 extends BaseTest {
         Assert.assertEquals(employees.getFirst().getDept_no(), deptNo,
                 "First employee with dept_no: " + employees.getFirst().getDept_no()
                          + "does no match dept_no: " + deptNo);
+
+        log.info("TC_01 test finished successfully");
     }
 }
