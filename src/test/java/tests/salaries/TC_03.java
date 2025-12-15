@@ -25,9 +25,9 @@ public class TC_03 extends BaseTest {
 
         log.info("Running test");
 
-        double salary = salaryDao.avgSalaryEmployees();
+        double avgSalary = salaryDao.avgSalaryEmployees();
 
-        Assert.assertTrue(salary > 0, "Average salary should be greater than 0");
+        Assert.assertTrue(avgSalary > 0, "Average salary should be greater than 0");
 
         log.info("TC_03 test finished successfully");
     }
