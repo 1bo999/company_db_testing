@@ -1,5 +1,7 @@
 package dao;
 
+import model.DepartmentHighestAvgSalaryDTO;
+import model.DepartmentTopSalaryDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.SqlLoader;
@@ -8,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SalaryDao {
 
@@ -19,6 +23,9 @@ public class SalaryDao {
     }
 
     private final String TC_03 = "sql/TC_03.sql";
+
+    private final String TC_16 = "sql/TC_16.sql";
+    private final String TC_17 = "sql/TC_17.sql";
 
     public double avgSalaryEmployees() {
         String sql = SqlLoader.loadSql(TC_03);
@@ -36,4 +43,42 @@ public class SalaryDao {
         }
         return 0;
     }
+    public List<DepartmentTopSalaryDTO> findHighestSalaryPerDepartment() {
+        String sql = SqlLoader.loadSql(TC_16);
+        List<DepartmentTopSalaryDTO> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {
+                result.add(
+                        new DepartmentTopSalaryDTO(
+                                rs.getString("dept_name"),
+                                rs.getString("first_name"),
+                                rs.getString("last_name"),
+                                rs.getInt("peak_salary")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }return result;
+    }
+
+    public List<DepartmentHighestAvgSalaryDTO> findHighestAvgSalaryPerDepartment() {
+        String sql = SqlLoader.loadSql(TC_17);
+        List<DepartmentHighestAvgSalaryDTO> list = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new DepartmentHighestAvgSalaryDTO(
+                        rs.getString("dept_name"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getDouble("avg_salary")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
 }

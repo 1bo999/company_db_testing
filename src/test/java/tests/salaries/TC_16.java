@@ -1,7 +1,9 @@
-package tests.employees;
+package tests.salaries;
 
 import dao.EmployeeDao;
+import dao.SalaryDao;
 import model.DepartmentTopSalaryDTO;
+import model.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -15,26 +17,23 @@ import java.util.List;
 public class TC_16 extends BaseTest {
 
     private static final Logger log = LoggerFactory.getLogger(TC_16.class);
-    private EmployeeDao employeeDao;
+    private SalaryDao salaryDao;
 
     @BeforeMethod
     public void setupDao(){
         log.info("Setting up DAO");
 
-        employeeDao= new EmployeeDao(connection);
+        salaryDao= new SalaryDao(connection);
     }
 
     @Test
-    public void testFindHighestSalaryPerDepartment() throws SQLException {
+    public void testFindHighestSalaryPerDepartment() {
         log.info("Running test");
 
-        List<DepartmentTopSalaryDTO> result = employeeDao.findHighestSalary();
-        Assert.assertFalse(result.isEmpty(),
-                "Highest salary per department list should not be empty");
+            List<DepartmentTopSalaryDTO> list = salaryDao.findHighestSalaryPerDepartment();
 
-        DepartmentTopSalaryDTO dto = result.getFirst();
-        Assert.assertTrue(dto.getPeakSalary() > 0,
-                "Peak salary should be greater than 0");
+            Assert.assertFalse(list.isEmpty());
+            Assert.assertTrue(list.getFirst().getPeakSalary() > 0);
 
         log.info("TC_16 test finished successfully");
     }
