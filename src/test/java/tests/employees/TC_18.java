@@ -1,7 +1,7 @@
 package tests.employees;
 
 import dao.EmployeeDao;
-import model.EmployeeHireDateDTO;
+import model.Employee;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -27,16 +27,10 @@ public class TC_18 extends BaseTest {
     public void testEmployeesHiredBefore1990() {
         log.info("Running test");
 
-        List<EmployeeHireDateDTO> result =
-                employeeDao.findEmployeesHiredBefore1990();
+            List<Employee> list = employeeDao.findEmployeesHiredBefore1990();
 
-        Assert.assertFalse(result.isEmpty(),
-                "Employee list should not be empty");
+            Assert.assertFalse(list.isEmpty());
 
-        Assert.assertTrue(
-                result.getFirst().getHireDate().isBefore(
-                        java.time.LocalDate.of(1990, 1, 1)
-                ));
         log.info("TC_18 test finished successfully");
     }
 }

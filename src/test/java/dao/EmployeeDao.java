@@ -17,13 +17,9 @@ public class EmployeeDao {
     private final String TC_01 = "sql/TC_01.sql";
     private final String TC_02 = "sql/TC_02.sql";
 
-    private final String TC_16 = "sql/TC_16.sql";
-    private final String TC_17 = "sql/TC_17.sql";
+
     private final String TC_18 = "sql/TC_18.sql";
     private final String TC_19 = "sql/TC_19.sql";
-
-
-
 
 
     public EmployeeDao(Connection connection) {
@@ -80,89 +76,6 @@ public class EmployeeDao {
         return empDept;
     }
 
-    public List<DepartmentTopSalaryDTO> findHighestSalary() {
-        String sql = SqlLoader.loadSql(TC_16);
-        List<DepartmentTopSalaryDTO> result = new ArrayList<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                result.add(
-                        new DepartmentTopSalaryDTO(
-                                rs.getString("dept_name"),
-                                rs.getString("first_name"),
-                                rs.getString("last_name"),
-                                rs.getInt("peak_salary")));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } return result;
-    }
-
-    public List<DepartmentHighestAvgSalaryDTO> findHighestAvgSalary() {
-        String sql = SqlLoader.loadSql(TC_17);
-        List<DepartmentHighestAvgSalaryDTO> result = new ArrayList<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                result.add(
-                        new DepartmentHighestAvgSalaryDTO(
-                                rs.getString("dept_name"),
-                                rs.getString("first_name"),
-                                rs.getString("last_name"),
-                                rs.getDouble("avg_salary")));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } return result;
-    }
-
-    public List<EmployeeHireDateDTO> findEmployeesHiredBefore1990() {
-        String sql = SqlLoader.loadSql(TC_18);
-        List<EmployeeHireDateDTO> result = new ArrayList<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                result.add(
-                        new EmployeeHireDateDTO(
-                                rs.getString("first_name"),
-                                rs.getString("last_name"),
-                                rs.getDate("hire_date").toLocalDate()));
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }return result;
-    }
-
-    public List<EmployeeHireDateDTO> findEmployeesHiredBetween1985And1989() {
-        String sql = SqlLoader.loadSql(TC_19);
-        List<EmployeeHireDateDTO> result = new ArrayList<>();
-
-        try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                result.add(
-                        new EmployeeHireDateDTO(
-                                rs.getString("first_name"),
-                                rs.getString("last_name"),
-                                rs.getDate("hire_date").toLocalDate()));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } return result;
-    }
-
-
-
-
     private EmployeeDepartmentDto rowToEmployeeDepartment(ResultSet rs) throws SQLException {
 
         EmployeeDepartmentDto eddDto = new EmployeeDepartmentDto();
@@ -175,4 +88,55 @@ public class EmployeeDao {
 
         return eddDto;
     }
+
+    public List<Employee> findEmployeesHiredBefore1990() {
+
+        String sql = SqlLoader.loadSql(TC_18);
+        List<Employee> list = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(rowToEmployeeWithoutDept(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return list;
+    }
+
+    public List<Employee> findEmployeesHiredBetween1985And1989() {
+        String sql = SqlLoader.loadSql(TC_19);
+        List<Employee> list = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                list.add(rowToEmployee(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
+    private Employee rowToEmployeeWithoutDept(ResultSet rs) throws SQLException {
+
+        Employee employee = new Employee();
+
+        employee.setEmp_no(rs.getInt("emp_no"));
+        employee.setBirth_date(rs.getDate("birth_date").toLocalDate());
+        employee.setFirstName(rs.getString("first_name"));
+        employee.setLastName(rs.getString("last_name"));
+        employee.setGender(rs.getString("gender"));
+        employee.setHire_date(rs.getDate("hire_date").toLocalDate());
+
+        return employee;
+    }
+
+
 }
