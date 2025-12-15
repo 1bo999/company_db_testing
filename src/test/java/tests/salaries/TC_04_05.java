@@ -8,9 +8,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.Base.BaseTest;
 
-public class TC_04 extends BaseTest {
+public class TC_04_05 extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TC_04.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_04_05.class);
     private SalaryDao salaryDao;
 
     @BeforeMethod
@@ -20,16 +20,26 @@ public class TC_04 extends BaseTest {
     }
 
     @Test
-    public void test() {
+    public void test1() {
         log.info("Running test");
 
-        double avgSalary = salaryDao.avgSalaryByGender("f");
-
-        log.info("TC_04 test finished successfully");
+        double avgSalary = salaryDao.avgSalaryByGender("m");
 
         Assert.assertTrue(avgSalary > 0,
                 "Average salary should be greater than zero");
 
-        log.info("TC_04 test finished successfully");
+        log.info("TC_04 test finished successfully\n");
+    }
+
+    @Test
+    public void test2() {
+        log.info("Running test");
+
+        double avgSalary = salaryDao.avgSalaryByGender("f");
+
+        Assert.assertTrue(avgSalary > 0,
+                "Average salary should be greater than zero");
+
+        log.info("TC_05 test finished successfully");
     }
 }

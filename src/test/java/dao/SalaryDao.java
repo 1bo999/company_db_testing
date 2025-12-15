@@ -23,7 +23,7 @@ public class SalaryDao {
     }
 
     private final String TC_03 = "sql/TC_03.sql";
-    private final String TC_04 = "sql/TC_04.sql";
+    private final String TC_04 = "sql/TC_04_05.sql";
 
     private final String TC_16 = "sql/TC_16.sql";
     private final String TC_17 = "sql/TC_17.sql";
