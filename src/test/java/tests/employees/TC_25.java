@@ -9,11 +9,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.Base.BaseTest;
 
-import java.util.List;
+public class TC_25 extends BaseTest {
 
-public class TC_19 extends BaseTest {
-
-    private static final Logger log = LoggerFactory.getLogger(TC_19.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_25.class);
     private EmployeeDao employeeDao;
 
     @BeforeMethod
@@ -24,13 +22,15 @@ public class TC_19 extends BaseTest {
     }
 
     @Test
-    public void testEmployeesHiredBetween1985And1989() {
+    public void testFindEmployeeByFullName() {
         log.info("Running test");
 
-        List<Employee> list =
-                employeeDao.findEmployeesHiredBetween1985And1989();
+        Employee employee =
+                employeeDao.findEmployeeByFullName("Annemarie", "Redmiles");
 
-        Assert.assertFalse(list.isEmpty());
+        Assert.assertNotNull(employee);
+        Assert.assertEquals(employee.getFirstName(), "Annemarie");
+        Assert.assertEquals(employee.getLastName(), "Redmiles");
         log.info("Test finished successfully");
     }
 }
