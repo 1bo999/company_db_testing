@@ -21,6 +21,7 @@ public class EmployeeDao {
     private final String TC_02 = "sql/TC_02.sql";
     private final String TC_06 = "sql/TC_06.sql";
     private final String TC_07 = "sql/TC_07.sql";
+    private final String TC_10 = "sql/TC_10.sql";
 
 
     private final String TC_18 = "sql/TC_18.sql";
@@ -455,14 +456,14 @@ public class EmployeeDao {
 
     private EmployDepartSalaryDto rowToEmployeeWithSalary(ResultSet rs) throws SQLException {
 
-        EmployDepartSalaryDto edsd = new EmployDepartSalaryDto();
+        EmployDepartSalaryDto dto = new EmployDepartSalaryDto();
 
-        edsd.setFirstName(rs.getString("first_name"));
-        edsd.setLastName(rs.getString("last_name"));
-        edsd.setDeptName(rs.getString("dept_name"));
-        edsd.setSalary(rs.getInt("salary"));
+        dto.setFirstName(rs.getString("first_name"));
+        dto.setLastName(rs.getString("last_name"));
+        dto.setDeptName(rs.getString("dept_name"));
+        dto.setSalary(rs.getInt("salary"));
 
-        return edsd;
+        return dto;
     }
 
     public List<EmployDepartSalaryDto> listEmpByDeptMinMaxSalary(String dept_name, int minSalary, int maxSalary) {
@@ -472,7 +473,7 @@ public class EmployeeDao {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, dept_name);
             ps.setInt(2, minSalary);
-            ps.setInt(3,maxSalary);
+            ps.setInt(3, maxSalary);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
@@ -485,9 +486,37 @@ public class EmployeeDao {
         return result;
     }
 
+    public List<EmployeeSalaryDto> findAllSalaryChangeByEmpNo(int emp_no) {
+        String sql = SqlLoader.loadSql(TC_10);
+        List<EmployeeSalaryDto> result = new ArrayList<>();
 
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, emp_no);
 
+            ResultSet rs = ps.executeQuery();
 
+            while (rs.next()) {
+                result.add(rowToEmployeeSalChange(rs));
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private EmployeeSalaryDto rowToEmployeeSalChange(ResultSet rs) throws SQLException {
+        EmployeeSalaryDto dto = new EmployeeSalaryDto();
+
+        dto.setEmp_no(rs.getInt("emp_no"));
+        dto.setFull_name(rs.getString("full_name"));
+        dto.setSalary(rs.getInt("salary"));
+        dto.setFrom_date(rs.getDate("from_date").toLocalDate());
+        dto.setTo_date(rs.getDate("to_date").toLocalDate());
+
+        return dto;
+    }
 
 
 }

@@ -5,53 +5,20 @@ import java.time.LocalDate;
 public class EmployeeSalaryDto {
 
     private int emp_no;
-    private String firstName;
-    private String lastName;
-    private LocalDate hireDate;
-    private double salary;
+    private String full_name;
+    private int salary;
+    private LocalDate from_date;
+    private LocalDate to_date;
 
     public EmployeeSalaryDto() {
     }
 
-    public EmployeeSalaryDto(int emp_no, String firstName, String lastName,
-                             LocalDate hireDate, double salary) {
+    public EmployeeSalaryDto(int emp_no, String full_name, int salary, LocalDate from_date, LocalDate to_date) {
         this.emp_no = emp_no;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.hireDate = hireDate;
+        this.full_name = full_name;
         this.salary = salary;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public LocalDate getHireDate() {
-        return hireDate;
-    }
-
-    public void setHireDate(LocalDate hireDate) {
-        this.hireDate = hireDate;
-    }
-
-    public double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(double salary) {
-        this.salary = salary;
+        this.from_date = from_date;
+        this.to_date = to_date;
     }
 
     public int getEmp_no() {
@@ -62,14 +29,46 @@ public class EmployeeSalaryDto {
         this.emp_no = emp_no;
     }
 
+    public String getFull_name() {
+        return full_name;
+    }
+
+    public void setFull_name(String full_name) {
+        this.full_name = full_name;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public LocalDate getFrom_date() {
+        return from_date;
+    }
+
+    public void setFrom_date(LocalDate from_date) {
+        this.from_date = from_date;
+    }
+
+    public LocalDate getTo_date() {
+        return to_date;
+    }
+
+    public void setTo_date(LocalDate to_date) {
+        this.to_date = to_date;
+    }
+
     @Override
     public String toString() {
         return "EmployeeSalaryDto{" +
                 "emp_no=" + emp_no +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", hireDate=" + hireDate +
+                ", full_name='" + full_name + '\'' +
                 ", salary=" + salary +
+                ", from_date=" + from_date +
+                ", to_date=" + to_date +
                 '}';
     }
 }
