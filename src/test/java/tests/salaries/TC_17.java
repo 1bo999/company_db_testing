@@ -1,6 +1,5 @@
 package tests.salaries;
 
-import dao.EmployeeDao;
 import dao.SalaryDao;
 import model.DepartmentHighestAvgSalaryDTO;
 import org.slf4j.Logger;
@@ -32,6 +31,6 @@ public class TC_17 extends BaseTest {
                 salaryDao.findHighestAvgSalaryPerDepartment();
 
         Assert.assertFalse(list.isEmpty());
-        log.info("TC_17 test finished successfully");
+        log.info("Test finished successfully");
     }
 }

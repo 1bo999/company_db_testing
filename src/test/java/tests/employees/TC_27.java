@@ -1,7 +1,7 @@
 package tests.employees;
 
 import dao.EmployeeDao;
-import model.Employee;
+import model.EmployeeRoleDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -11,25 +11,28 @@ import tests.Base.BaseTest;
 
 import java.util.List;
 
-public class TC_18 extends BaseTest {
+public class TC_27 extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TC_18.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_27.class);
     private EmployeeDao employeeDao;
 
     @BeforeMethod
     public void setupDao() {
         log.info("Setting up DAO");
-
         employeeDao = new EmployeeDao(connection);
     }
 
     @Test
-    public void testEmployeesHiredBefore1990() {
-        log.info("Running test");
+    public void testEmployeesAndManagersInD005() {
+        log.info("Running Test");
 
-        List<Employee> list = employeeDao.findEmployeesHiredBefore1990();
-        Assert.assertFalse(list.isEmpty());
+        List<EmployeeRoleDto> result =
+                employeeDao.findEmployeesAndManagersByDept("d005");
 
+        Assert.assertFalse(result.isEmpty(),
+                "D005 department should have employees or managers");
+
+        Assert.assertNotNull(result.getFirst().getRole());
         log.info("Test finished successfully");
     }
 }
