@@ -1,8 +1,6 @@
 package dao;
 
-import model.Department;
 import model.DepartmentSalaryDto;
-import model.EmployDepartSalaryDto;
 import utils.SqlLoader;
 
 import java.sql.Connection;
@@ -16,14 +14,14 @@ public class DepartmentDao {
 
     private final Connection connection;
 
-    private final String TC_08 = "sql/TC_08.sql";
+    private final String TC_08_09 = "sql/TC_08_09.sql";
 
     public DepartmentDao(Connection connection) {
         this.connection = connection;
     }
 
     public List<DepartmentSalaryDto> avgSalaryEachDept() {
-        String sql = SqlLoader.loadSql(TC_08);
+        String sql = SqlLoader.loadSql(TC_08_09);
 
         List<DepartmentSalaryDto> result = new ArrayList<>();
 
@@ -34,6 +32,7 @@ public class DepartmentDao {
                 DepartmentSalaryDto dto = new DepartmentSalaryDto();
 
                 dto.setDept_no(rs.getString("dept_no"));
+                dto.setDept_name(rs.getString("dept_name"));
                 dto.setAverage_salary(rs.getDouble("average_salary"));
 
                 result.add(dto);

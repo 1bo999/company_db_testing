@@ -3,6 +3,7 @@ package model;
 public class DepartmentSalaryDto {
 
     private String dept_no;
+    private String dept_name;
     private double average_salary;
 
     public DepartmentSalaryDto() {
@@ -29,10 +30,19 @@ public class DepartmentSalaryDto {
         this.average_salary = average_salary;
     }
 
+    public String getDept_name() {
+        return dept_name;
+    }
+
+    public void setDept_name(String dept_name) {
+        this.dept_name = dept_name;
+    }
+
     @Override
     public String toString() {
         return "DepartmentSalaryDto{" +
                 "dept_no='" + dept_no + '\'' +
+                ", dept_name='" + dept_name + '\'' +
                 ", average_salary=" + average_salary +
                 '}';
     }
