@@ -19,6 +19,8 @@ public class EmployeeDao {
 
     private final String TC_01 = "sql/TC_01.sql";
     private final String TC_02 = "sql/TC_02.sql";
+    private final String TC_06 = "sql/TC_06.sql";
+    private final String TC_07 = "sql/TC_07.sql";
 
 
     private final String TC_18 = "sql/TC_18.sql";
@@ -431,4 +433,61 @@ public class EmployeeDao {
             throw new RuntimeException(e);
         } return result;
     }
+}
+    public List<EmployDepartSalaryDto> listEmployeeByDeptName(String dept_name, int minSalary) {
+        String sql = SqlLoader.loadSql(TC_06);
+        List<EmployDepartSalaryDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, dept_name);
+            ps.setInt(2, minSalary);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                result.add(rowToEmployeeWithSalary(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+
+    private EmployDepartSalaryDto rowToEmployeeWithSalary(ResultSet rs) throws SQLException {
+
+        EmployDepartSalaryDto edsd = new EmployDepartSalaryDto();
+
+        edsd.setFirstName(rs.getString("first_name"));
+        edsd.setLastName(rs.getString("last_name"));
+        edsd.setDeptName(rs.getString("dept_name"));
+        edsd.setSalary(rs.getInt("salary"));
+
+        return edsd;
+    }
+
+    public List<EmployDepartSalaryDto> listEmpByDeptMinMaxSalary(String dept_name, int minSalary, int maxSalary) {
+        String sql = SqlLoader.loadSql(TC_07);
+        List<EmployDepartSalaryDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, dept_name);
+            ps.setInt(2, minSalary);
+            ps.setInt(3,maxSalary);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                result.add(rowToEmployeeWithSalary(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
+
+
+
+
+
+
 }
