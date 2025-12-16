@@ -11,9 +11,9 @@ import tests.Base.BaseTest;
 
 import java.util.List;
 
-public class TC_08 extends BaseTest {
+public class TC_08_09 extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TC_08.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_08_09.class);
     private DepartmentDao departmentDao;
 
     @BeforeMethod
@@ -35,6 +35,10 @@ public class TC_08 extends BaseTest {
                 "First department with avg_salary is smaller than zero"
         );
 
-        log.info("TC_08 test finished successfully");
+        Assert.assertFalse(
+                result.getFirst().getDept_name().isEmpty(),
+                "First department with dept_name is empty");
+
+        log.info("TC_08_09 test finished successfully");
     }
 }
