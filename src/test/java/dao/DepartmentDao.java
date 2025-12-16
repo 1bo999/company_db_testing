@@ -1,35 +1,46 @@
 package dao;
 
 import model.Department;
+import model.DepartmentSalaryDto;
+import model.EmployDepartSalaryDto;
 import utils.SqlLoader;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DepartmentDao {
 
     private final Connection connection;
 
-    private static final String INSERT_DEPARTMENT = "sql/departments/insert.sql";
+    private final String TC_08 = "sql/TC_08.sql";
 
     public DepartmentDao(Connection connection) {
         this.connection = connection;
     }
 
-    public Department insertDepartment(Department department) {
-        String sql = SqlLoader.loadSql(INSERT_DEPARTMENT);
+    public List<DepartmentSalaryDto> avgSalaryEachDept() {
+        String sql = SqlLoader.loadSql(TC_08);
 
-        try {
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setString(1, department.getDept_no());
-            ps.setString(2, department.getName());
+        List<DepartmentSalaryDto> result = new ArrayList<>();
 
-            ps.executeUpdate();
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                DepartmentSalaryDto dto = new DepartmentSalaryDto();
+
+                dto.setDept_no(rs.getString("dept_no"));
+                dto.setAverage_salary(rs.getDouble("average_salary"));
+
+                result.add(dto);
+            }
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return department;
     }
 }
