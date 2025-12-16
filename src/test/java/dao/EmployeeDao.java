@@ -7,8 +7,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EmployeeDao {
 
@@ -20,6 +23,19 @@ public class EmployeeDao {
 
     private final String TC_18 = "sql/TC_18.sql";
     private final String TC_19 = "sql/TC_19.sql";
+    private final String TC_20 = "sql/TC_20.sql";
+    private final String TC_21 = "sql/TC_21.sql";
+    private final String TC_22 = "sql/TC_22.sql";
+    private final String TC_24 = "sql/TC_24.sql";
+    private final String TC_25 = "sql/TC_25.sql";
+    private final String TC_26 = "sql/TC_26.sql";
+    private final String TC_27 = "sql/TC_27.sql";
+    private final String TC_28 = "sql/TC_28.sql";
+    private final String TC_29 = "sql/TC_29.sql";
+    private final String TC_30 = "sql/TC_30.sql";
+    private final String TC_32 = "sql/TC_32.sql";
+    private final String TC_34 = "sql/TC_34.sql";
+    private final String TC_35 = "sql/TC_35.sql";
 
 
     public EmployeeDao(Connection connection) {
@@ -77,7 +93,6 @@ public class EmployeeDao {
     }
 
     private EmployeeDepartmentDto rowToEmployeeDepartment(ResultSet rs) throws SQLException {
-
         EmployeeDepartmentDto eddDto = new EmployeeDepartmentDto();
 
         eddDto.setFirstName(rs.getString("first_name"));
@@ -90,21 +105,17 @@ public class EmployeeDao {
     }
 
     public List<Employee> findEmployeesHiredBefore1990() {
-
         String sql = SqlLoader.loadSql(TC_18);
         List<Employee> list = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
                 list.add(rowToEmployeeWithoutDept(rs));
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
         return list;
     }
 
@@ -114,9 +125,8 @@ public class EmployeeDao {
 
         try (PreparedStatement ps = connection.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
-                list.add(rowToEmployee(rs));
+                list.add(rowToEmployeeWithoutDept(rs));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -125,7 +135,6 @@ public class EmployeeDao {
     }
 
     private Employee rowToEmployeeWithoutDept(ResultSet rs) throws SQLException {
-
         Employee employee = new Employee();
 
         employee.setEmp_no(rs.getInt("emp_no"));
@@ -138,5 +147,288 @@ public class EmployeeDao {
         return employee;
     }
 
+    public List<EmployeeHireSalaryDTO> findSalesEmployeesHiredBetween1985And1989() {
+        String sql = SqlLoader.loadSql(TC_20);
+        List<EmployeeHireSalaryDTO> result = new ArrayList<>();
 
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                EmployeeHireSalaryDTO dto = new EmployeeHireSalaryDTO();
+
+                dto.setFirstName(rs.getString("first_name"));
+                dto.setLastName(rs.getString("last_name"));
+                dto.setHireDate(rs.getDate("hire_date").toLocalDate());
+                dto.setSalary(rs.getDouble("salary"));
+                result.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public Map<String, Integer> countEmployeesByGender() {
+        String sql = SqlLoader.loadSql(TC_21);
+        Map<String, Integer> result = new HashMap<>();
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                result.put(
+                        rs.getString("gender"),
+                        rs.getInt("total"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public Map<String, Integer> getUniqueNameAndDepartmentCounts() {
+        String sql = SqlLoader.loadSql(TC_22);
+        Map<String, Integer> result = new HashMap<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                result.put("uniqueFirstNames",
+                        rs.getInt("unique_first_names"));
+                result.put("departmentCount",
+                        rs.getInt("department_count"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public List<Employee> findEmployeesHiredInLast5YearsFrom1990() {
+        String sql = SqlLoader.loadSql(TC_24);
+        List<Employee> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                result.add(rowToEmployeeWithoutDept(rs));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+    public Employee findEmployeeByFullName(String firstName, String lastName) {
+        String sql = SqlLoader.loadSql(TC_25);
+        Employee employee = null;
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    employee = rowToEmployeeWithoutDept(rs);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return employee;
+    }
+
+    public EmployeeFullInfoDTO findEmployeeFullInfoByName(String firstName, String lastName) {
+        String sql = SqlLoader.loadSql(TC_26);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new EmployeeFullInfoDTO(
+                            rs.getInt("emp_no"),
+                            rs.getDate("birth_date").toLocalDate(),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("gender"),
+                            rs.getDate("hire_date").toLocalDate(),
+                            rs.getDouble("salary"),
+                            rs.getString("dept_name"),
+                            rs.getString("title"));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return null;
+    }
+
+    public List<EmployeeRoleDto> findEmployeesAndManagersByDept(String deptNo) {
+        String sql = SqlLoader.loadSql(TC_27);
+        List<EmployeeRoleDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, deptNo);
+            ps.setString(2, deptNo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(rowToEmployeeRole(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return result;
+    }
+
+    private EmployeeRoleDto rowToEmployeeRole(ResultSet rs) throws SQLException {
+
+        EmployeeRoleDto dto = new EmployeeRoleDto();
+
+        dto.setEmp_no(rs.getInt("emp_no"));
+        dto.setFirstName(rs.getString("first_name"));
+        dto.setLastName(rs.getString("last_name"));
+        dto.setRole(rs.getString("role"));
+
+        return dto;
+    }
+
+    public List<EmployeeSalaryDto> findEmployeesHiredAfterWithSalary(
+            LocalDate hireDate, double minSalary) {
+
+        String sql = SqlLoader.loadSql(TC_28);
+        List<EmployeeSalaryDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setDate(1, java.sql.Date.valueOf(hireDate));
+            ps.setDouble(2, minSalary);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(rowToEmployeeSalary(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }return result;
+    }
+
+    private EmployeeSalaryDto rowToEmployeeSalary(ResultSet rs) throws SQLException {
+        EmployeeSalaryDto dto = new EmployeeSalaryDto();
+
+        dto.setEmp_no(rs.getInt("emp_no"));
+        dto.setFirstName(rs.getString("first_name"));
+        dto.setLastName(rs.getString("last_name"));
+        dto.setHireDate(rs.getDate("hire_date").toLocalDate());
+        dto.setSalary(rs.getDouble("salary"));
+        return dto;
+    }
+
+    public List<EmployeeRoleDto> findSalesManagers() {
+        String sql = SqlLoader.loadSql(TC_29);
+        List<EmployeeRoleDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                EmployeeRoleDto dto = new EmployeeRoleDto();
+
+                dto.setEmp_no(rs.getInt("emp_no"));
+                dto.setFirstName(rs.getString("first_name"));
+                dto.setLastName(rs.getString("last_name"));
+                dto.setRole("Manager");
+                result.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }return result;
+    }
+
+    public String findLongestWorkedDepartment(int empNo) {
+        String sql = SqlLoader.loadSql(TC_30);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("dept_name");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return null;
+    }
+
+    public List<EmployeeRoleDto> findEmployeeTitleHistory(int empNo) {
+        String sql = SqlLoader.loadSql(TC_32);
+        List<EmployeeRoleDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, empNo);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(rowToEmployeeTitle(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return result;
+    }
+
+    private EmployeeRoleDto rowToEmployeeTitle(ResultSet rs) throws SQLException {
+        EmployeeRoleDto dto = new EmployeeRoleDto();
+
+        dto.setEmp_no(rs.getInt("emp_no"));
+        dto.setRole(rs.getString("title"));
+        return dto;
+    }
+
+    public double findAverageEmployeeAge() {
+        String sql = SqlLoader.loadSql("sql/TC_33.sql");
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getDouble("avg_age");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return 0;
+    }
+
+    public List<DepartmentEmployeeCountDTO> findEmployeeCountPerDepartment() {
+        String sql = SqlLoader.loadSql(TC_34);
+        List<DepartmentEmployeeCountDTO> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                result.add(
+                        new DepartmentEmployeeCountDTO(
+                                rs.getString("dept_name"),
+                                rs.getInt("employee_count")));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return result;
+    }
+
+    public List<Dept_emp> findManagerialHistory(int empNo) {
+        String sql = SqlLoader.loadSql(TC_35);
+        List<Dept_emp> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, empNo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Dept_emp dm = new Dept_emp();
+
+                    dm.setEmp_no(rs.getInt("emp_no"));
+                    dm.setDept_no(rs.getString("dept_no"));
+                    dm.setFrom_date(rs.getDate("from_date").toLocalDate());
+                    dm.setTo_date(rs.getDate("to_date").toLocalDate());
+                    result.add(dm);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } return result;
+    }
 }

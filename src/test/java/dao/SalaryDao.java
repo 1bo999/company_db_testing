@@ -2,6 +2,7 @@ package dao;
 
 import model.DepartmentHighestAvgSalaryDTO;
 import model.DepartmentTopSalaryDTO;
+import model.EmployeeSalaryDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import utils.SqlLoader;
@@ -26,6 +27,8 @@ public class SalaryDao {
 
     private final String TC_16 = "sql/TC_16.sql";
     private final String TC_17 = "sql/TC_17.sql";
+    private final String TC_31 = "sql/TC_31.sql";
+
 
     public double avgSalaryEmployees() {
         String sql = SqlLoader.loadSql(TC_03);
@@ -43,12 +46,13 @@ public class SalaryDao {
         }
         return 0;
     }
+
     public List<DepartmentTopSalaryDTO> findHighestSalaryPerDepartment() {
         String sql = SqlLoader.loadSql(TC_16);
         List<DepartmentTopSalaryDTO> result = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()){
+             ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 result.add(
                         new DepartmentTopSalaryDTO(
@@ -59,7 +63,8 @@ public class SalaryDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }return result;
+        }
+        return result;
     }
 
     public List<DepartmentHighestAvgSalaryDTO> findHighestAvgSalaryPerDepartment() {
@@ -81,4 +86,28 @@ public class SalaryDao {
         return list;
     }
 
+    public EmployeeSalaryDto findHighestPaidEmployeeInD004() {
+
+        String sql = SqlLoader.loadSql(TC_31);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                EmployeeSalaryDto dto = new EmployeeSalaryDto();
+
+                dto.setEmp_no(rs.getInt("emp_no"));
+                dto.setFirstName(rs.getString("first_name"));
+                dto.setLastName(rs.getString("last_name"));
+                dto.setSalary(rs.getDouble("salary"));
+
+                return dto;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return null;
+    }
 }

@@ -1,7 +1,7 @@
 package tests.employees;
 
 import dao.EmployeeDao;
-import model.Employee;
+import model.Dept_emp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -11,26 +11,26 @@ import tests.Base.BaseTest;
 
 import java.util.List;
 
-public class TC_19 extends BaseTest {
+public class TC_35 extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TC_19.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_35.class);
     private EmployeeDao employeeDao;
 
     @BeforeMethod
     public void setupDao() {
         log.info("Setting up DAO");
-
         employeeDao = new EmployeeDao(connection);
     }
 
     @Test
-    public void testEmployeesHiredBetween1985And1989() {
+    public void testManagerialHistory() {
         log.info("Running test");
 
-        List<Employee> list =
-                employeeDao.findEmployeesHiredBetween1985And1989();
+        int empNo = 110022;
+        List<Dept_emp> result = employeeDao.findManagerialHistory(empNo);
 
-        Assert.assertFalse(list.isEmpty());
+        Assert.assertFalse(result.isEmpty(), "Managerial history should not be empty");
+        Assert.assertEquals(result.getFirst().getEmp_no(), empNo);
         log.info("Test finished successfully");
     }
 }

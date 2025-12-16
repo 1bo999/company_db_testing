@@ -11,9 +11,9 @@ import tests.Base.BaseTest;
 
 import java.util.List;
 
-public class TC_19 extends BaseTest {
+public class TC_24 extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TC_19.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_22.class);
     private EmployeeDao employeeDao;
 
     @BeforeMethod
@@ -24,13 +24,13 @@ public class TC_19 extends BaseTest {
     }
 
     @Test
-    public void testEmployeesHiredBetween1985And1989() {
+    public void testEmployeesHiredInLast5YearsFrom1990() {
         log.info("Running test");
+        List<Employee> result =
+                employeeDao.findEmployeesHiredInLast5YearsFrom1990();
 
-        List<Employee> list =
-                employeeDao.findEmployeesHiredBetween1985And1989();
-
-        Assert.assertFalse(list.isEmpty());
+        Assert.assertFalse(result.isEmpty(),
+                "Employee list should not be empty");
         log.info("Test finished successfully");
     }
 }
