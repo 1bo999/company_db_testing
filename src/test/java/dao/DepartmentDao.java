@@ -1,6 +1,7 @@
 package dao;
 
 import model.DepartmentSalaryDto;
+import model.EmployeeSalaryDto;
 import utils.SqlLoader;
 
 import java.sql.Connection;
@@ -17,6 +18,7 @@ public class DepartmentDao {
     private final Connection connection;
 
     private final String TC_08_09 = "sql/TC_08_09.sql";
+    private final String TC_14 = "sql/TC_14.sql";
 
     private final String TC_23 = "sql/TC_23.sql";
 
@@ -64,4 +66,29 @@ public class DepartmentDao {
         } return result;
     }
 
+    public List<EmployeeSalaryDto> listHighestSalEmpByDeptName(String dept_name) {
+        String sql = SqlLoader.loadSql(TC_14);
+        List<EmployeeSalaryDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)){
+
+            ps.setString(1,dept_name);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                EmployeeSalaryDto dto = new EmployeeSalaryDto();
+
+                dto.setFull_name(rs.getString("full_name"));
+                dto.setSalary(rs.getInt("salary"));
+
+                result.add(dto);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
+    }
 }
