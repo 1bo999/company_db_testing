@@ -1,8 +1,6 @@
 package dao;
 
-import model.DepartmentEmployeeSalaryDto;
-import model.DepartmentSalaryDto;
-import model.EmployeeSalaryDto;
+import model.*;
 import utils.SqlLoader;
 
 import java.sql.Connection;
@@ -23,6 +21,7 @@ public class DepartmentDao {
     private final String TC_15 = "sql/TC_15.sql";
 
     private final String TC_23 = "sql/TC_23.sql";
+    private final String TC_41 = "sql/TC_41.sql";
 
     public DepartmentDao(Connection connection) {
         this.connection = connection;
@@ -113,6 +112,31 @@ public class DepartmentDao {
             }
 
             return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Department> departmentsByEmp10102() {
+        String sql = SqlLoader.loadSql(TC_41);
+
+        List<Department> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                Department model = new Department();
+
+                model.setName(rs.getString("dept_name"));
+                model.setDept_no(rs.getString("dept_no"));
+
+                result.add(model);
+            }
+
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

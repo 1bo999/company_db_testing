@@ -38,6 +38,11 @@ public class EmployeeDao {
     private final String TC_34 = "sql/TC_34.sql";
     private final String TC_35 = "sql/TC_35.sql";
 
+    private final String TC_36 = "sql/TC_36.sql";
+    private final String TC_38 = "sql/TC_38.sql";
+    private final String TC_39 = "sql/TC_39.sql";
+    private final String TC_40 = "sql/TC_40.sql";
+
 
     public EmployeeDao(Connection connection) {
         this.connection = connection;
@@ -571,5 +576,113 @@ public class EmployeeDao {
         }
 
         return result;
+    }
+
+    public List<EmployeeDurationDto> findDurationEachEmployee() {
+        String sql = SqlLoader.loadSql(TC_36);
+        List<EmployeeDurationDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)){
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                EmployeeDurationDto dto = new EmployeeDurationDto();
+
+                dto.setFirstName(rs.getString("first_name"));
+                dto.setLastName(rs.getString("last_name"));
+                dto.setEmpNo(rs.getInt("emp_no"));
+                dto.setDuration(rs.getInt("emp_duration"));
+
+                result.add(dto);
+            }
+
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Employee> managerNameByDeptNo(String dept_no) {
+        String sql = SqlLoader.loadSql(TC_38);
+        List<Employee> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)){
+            ps.setString(1,dept_no);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Employee model = new Employee();
+
+                model.setFirstName(rs.getString("first_name"));
+                model.setLastName(rs.getString("last_name"));
+
+                result.add(model);
+            }
+
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Employee> sortEmployeeByBirthDate() {
+        String sql = SqlLoader.loadSql(TC_39);
+
+        List<Employee> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                Employee model = new Employee();
+
+                model.setEmp_no(rs.getInt("emp_no"));
+                model.setBirth_date(rs.getDate("birth_date").toLocalDate());
+                model.setFirstName(rs.getString("first_name"));
+                model.setLastName(rs.getString("last_name"));
+                model.setGender(rs.getString("gender"));
+                model.setHire_date(rs.getDate("hire_date").toLocalDate());
+                model.setDept_no(rs.getString("dept_no"));
+
+                result.add(model);
+            }
+
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Employee> listEmployedOn1992() {
+        String sql = SqlLoader.loadSql(TC_40);
+
+        List<Employee> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+
+            while (rs.next()) {
+                Employee model = new Employee();
+
+                model.setEmp_no(rs.getInt("emp_no"));
+                model.setBirth_date(rs.getDate("birth_date").toLocalDate());
+                model.setFirstName(rs.getString("first_name"));
+                model.setLastName(rs.getString("last_name"));
+                model.setGender(rs.getString("gender"));
+                model.setHire_date(rs.getDate("hire_date").toLocalDate());
+                model.setDept_no(rs.getString("dept_no"));
+
+                result.add(model);
+            }
+
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
