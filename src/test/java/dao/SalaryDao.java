@@ -119,9 +119,8 @@ public class SalaryDao {
                 EmployeeSalaryDto dto = new EmployeeSalaryDto();
 
                 dto.setEmp_no(rs.getInt("emp_no"));
-                dto.setFirstName(rs.getString("first_name"));
-                dto.setLastName(rs.getString("last_name"));
-                dto.setSalary(rs.getDouble("salary"));
+                dto.setFull_name(rs.getString("full_name"));
+                dto.setSalary(rs.getInt("salary"));
 
                 return dto;
             }

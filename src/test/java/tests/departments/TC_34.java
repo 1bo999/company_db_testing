@@ -1,7 +1,7 @@
-package tests.employees;
+package tests.departments;
 
 import dao.EmployeeDao;
-import model.EmployeeRoleDto;
+import model.DepartmentEmployeeCountDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -11,9 +11,9 @@ import tests.Base.BaseTest;
 
 import java.util.List;
 
-public class TC_32 extends BaseTest {
+public class TC_34 extends BaseTest {
 
-    private static final Logger log = LoggerFactory.getLogger(TC_32.class);
+    private static final Logger log = LoggerFactory.getLogger(TC_34.class);
     private EmployeeDao employeeDao;
 
     @BeforeMethod
@@ -21,15 +21,15 @@ public class TC_32 extends BaseTest {
         log.info("Setting up DAO");
         employeeDao = new EmployeeDao(connection);
     }
+
     @Test
-    public void testEmployeeTitleHistory() {
+    public void testEmployeeCountPerDepartment() {
         log.info("Running test");
-        int empNo = 10001;
+        List<DepartmentEmployeeCountDTO> result =
+                employeeDao.findEmployeeCountPerDepartment();
 
-        List<EmployeeRoleDto> result = employeeDao.findEmployeeTitleHistory(empNo);
-
-        Assert.assertFalse(result.isEmpty(), "Employee title history should not be empty");
-        Assert.assertEquals(result.getFirst().getEmp_no(), empNo);
+        Assert.assertFalse(result.isEmpty(), "Result should not be empty");
+        Assert.assertTrue(result.getFirst().getEmployeeCount() > 0);
         log.info("Test finished successfully");
     }
 }

@@ -1,4 +1,4 @@
-package tests.employees;
+package tests.dept_manager;
 
 import dao.EmployeeDao;
 import model.Dept_emp;

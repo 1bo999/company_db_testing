@@ -1,4 +1,4 @@
-package tests.employees;
+package tests.departments;
 
 import dao.EmployeeDao;
 import org.slf4j.Logger;

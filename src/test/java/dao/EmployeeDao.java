@@ -1,6 +1,7 @@
 package dao;
 
 import model.*;
+import tests.employees.TC_06;
 import utils.SqlLoader;
 
 import java.sql.Connection;
@@ -261,7 +262,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return null;
+        }
+        return null;
     }
 
     public List<EmployeeRoleDto> findEmployeesAndManagersByDept(String deptNo) {
@@ -279,7 +281,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return result;
+        }
+        return result;
     }
 
     private EmployeeRoleDto rowToEmployeeRole(ResultSet rs) throws SQLException {
@@ -311,17 +314,16 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }return result;
+        }
+        return result;
     }
 
     private EmployeeSalaryDto rowToEmployeeSalary(ResultSet rs) throws SQLException {
         EmployeeSalaryDto dto = new EmployeeSalaryDto();
 
         dto.setEmp_no(rs.getInt("emp_no"));
-        dto.setFirstName(rs.getString("first_name"));
-        dto.setLastName(rs.getString("last_name"));
-        dto.setHireDate(rs.getDate("hire_date").toLocalDate());
-        dto.setSalary(rs.getDouble("salary"));
+        dto.setFull_name(rs.getString("full_name"));
+        dto.setSalary(rs.getInt("salary"));
         return dto;
     }
 
@@ -342,7 +344,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }return result;
+        }
+        return result;
     }
 
     public String findLongestWorkedDepartment(int empNo) {
@@ -356,7 +359,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return null;
+        }
+        return null;
     }
 
     public List<EmployeeRoleDto> findEmployeeTitleHistory(int empNo) {
@@ -372,7 +376,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return result;
+        }
+        return result;
     }
 
     private EmployeeRoleDto rowToEmployeeTitle(ResultSet rs) throws SQLException {
@@ -392,7 +397,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return 0;
+        }
+        return 0;
     }
 
     public List<DepartmentEmployeeCountDTO> findEmployeeCountPerDepartment() {
@@ -409,7 +415,8 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return result;
+        }
+        return result;
     }
 
     public List<Dept_emp> findManagerialHistory(int empNo) {
@@ -432,9 +439,10 @@ public class EmployeeDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        } return result;
+        }
+        return result;
     }
-}
+
     public List<EmployDepartSalaryDto> listEmployeeByDeptName(String dept_name, int minSalary) {
         String sql = SqlLoader.loadSql(TC_06);
         List<EmployDepartSalaryDto> result = new ArrayList<>();
@@ -516,7 +524,6 @@ public class EmployeeDao {
         dto.setTo_date(rs.getDate("to_date").toLocalDate());
 
         return dto;
+
     }
-
-
 }

@@ -30,7 +30,7 @@ public class TC_31 extends BaseTest {
         Assert.assertNotNull(result, "Result should not be null");
         Assert.assertTrue(result.getSalary() > 0, "Salary should be greater than 0");
 
-        log.info("Highest salary in D004: " + result);
+        log.info("Highest salary in D004: {}", result);
         log.info("Test finished successfully");
     }
 }

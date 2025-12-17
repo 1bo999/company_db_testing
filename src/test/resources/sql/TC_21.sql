@@ -1,1 +1,3 @@
-SELECT gender, COUNT(*) AS total FROM employees GROUP BY gender;
+SELECT gender, COUNT(*) AS total
+FROM employees
+GROUP BY gender;
