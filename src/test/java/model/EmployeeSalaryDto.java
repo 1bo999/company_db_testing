@@ -27,6 +27,11 @@ public class EmployeeSalaryDto {
         this.salary = salary;
     }
 
+    public EmployeeSalaryDto(String full_name, int salary) {
+        this.full_name = full_name;
+        this.salary = salary;
+    }
+
     public int getEmp_no() {
         return emp_no;
     }
