@@ -28,7 +28,7 @@ public class TC_04_05 extends BaseTest {
         Assert.assertTrue(avgSalary > 0,
                 "Average salary should be greater than zero");
 
-        log.info("TC_04 test finished successfully\n");
+        log.info("TC_04 test finished successfully");
     }
 
     @Test

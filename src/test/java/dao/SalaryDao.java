@@ -38,7 +38,6 @@ public class SalaryDao {
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    log.info("Average salary: {}", rs.getDouble("average_salary"));
                     return rs.getDouble("average_salary");
                 }
             }
