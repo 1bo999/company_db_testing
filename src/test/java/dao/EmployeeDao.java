@@ -20,6 +20,7 @@ public class EmployeeDao {
     private final String TC_07 = "sql/TC_07.sql";
     private final String TC_10 = "sql/TC_10_11.sql";
     private final String TC_12 = "sql/TC_12.sql";
+    private final String TC_13 = "sql/TC_13.sql";
 
     private final String TC_18 = "sql/TC_18.sql";
     private final String TC_19 = "sql/TC_19.sql";
@@ -525,10 +526,10 @@ public class EmployeeDao {
     public Employee employeeWithHighestSal() {
         String sql = SqlLoader.loadSql(TC_12);
 
-        try (PreparedStatement ps = connection.prepareStatement(sql)){
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
-            Employee model =  new Employee();
+            Employee model = new Employee();
 
             if (rs.next()) {
 
@@ -545,5 +546,30 @@ public class EmployeeDao {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public List<EmployeeSalaryDto> findLatestSalariesEachEmployee(LocalDate date) {
+        String sql = SqlLoader.loadSql(TC_13);
+        List<EmployeeSalaryDto> result = new ArrayList<>();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+
+            ps.setDate(1, Date.valueOf(date));
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                EmployeeSalaryDto dto = new EmployeeSalaryDto();
+
+                dto.setEmp_no(rs.getInt("emp_no"));
+                dto.setFull_name(rs.getString("full_name"));
+                dto.setSalary(rs.getInt("salary"));
+
+                result.add(dto);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return result;
     }
 }
