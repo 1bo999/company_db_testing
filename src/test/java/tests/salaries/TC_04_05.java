@@ -21,7 +21,7 @@ public class TC_04_05 extends BaseTest {
 
     @Test
     public void test1() {
-        log.info("Running test");
+        log.info("Running test 1");
 
         double avgSalary = salaryDao.avgSalaryByGender("m");
 
@@ -33,7 +33,7 @@ public class TC_04_05 extends BaseTest {
 
     @Test
     public void test2() {
-        log.info("Running test");
+        log.info("Running test 2");
 
         double avgSalary = salaryDao.avgSalaryByGender("f");
 
