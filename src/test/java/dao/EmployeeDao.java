@@ -1,13 +1,9 @@
 package dao;
 
 import model.*;
-import tests.employees.TC_06;
 import utils.SqlLoader;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +18,8 @@ public class EmployeeDao {
     private final String TC_02 = "sql/TC_02.sql";
     private final String TC_06 = "sql/TC_06.sql";
     private final String TC_07 = "sql/TC_07.sql";
-    private final String TC_10 = "sql/TC_10.sql";
-
+    private final String TC_10 = "sql/TC_10_11.sql";
+    private final String TC_12 = "sql/TC_12.sql";
 
     private final String TC_18 = "sql/TC_18.sql";
     private final String TC_19 = "sql/TC_19.sql";
@@ -304,7 +300,7 @@ public class EmployeeDao {
         List<EmployeeSalaryDto> result = new ArrayList<>();
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setDate(1, java.sql.Date.valueOf(hireDate));
+            ps.setDate(1, Date.valueOf(hireDate));
             ps.setDouble(2, minSalary);
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -524,6 +520,30 @@ public class EmployeeDao {
         dto.setTo_date(rs.getDate("to_date").toLocalDate());
 
         return dto;
+    }
 
+    public Employee employeeWithHighestSal() {
+        String sql = SqlLoader.loadSql(TC_12);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)){
+
+            ResultSet rs = ps.executeQuery();
+            Employee model =  new Employee();
+
+            if (rs.next()) {
+
+                model.setEmp_no(rs.getInt("emp_no"));
+                model.setBirth_date(rs.getDate("birth_date").toLocalDate());
+                model.setFirstName(rs.getString("first_name"));
+                model.setLastName(rs.getString("last_name"));
+                model.setGender(rs.getString("gender"));
+                model.setHire_date(rs.getDate("hire_date").toLocalDate());
+                model.setDept_no(rs.getString("dept_no"));
+            }
+
+            return model;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
