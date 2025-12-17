@@ -1,5 +1,6 @@
 package dao;
 
+import model.DepartmentEmployeeSalaryDto;
 import model.DepartmentSalaryDto;
 import model.EmployeeSalaryDto;
 import utils.SqlLoader;
@@ -19,6 +20,7 @@ public class DepartmentDao {
 
     private final String TC_08_09 = "sql/TC_08_09.sql";
     private final String TC_14 = "sql/TC_14.sql";
+    private final String TC_15 = "sql/TC_15.sql";
 
     private final String TC_23 = "sql/TC_23.sql";
 
@@ -90,5 +92,29 @@ public class DepartmentDao {
         }
 
         return result;
+    }
+
+    public DepartmentEmployeeSalaryDto findAvgHighSalaryByDeptName(String dept_name) {
+        String sql = SqlLoader.loadSql(TC_15);
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)){
+
+            DepartmentEmployeeSalaryDto dto = new DepartmentEmployeeSalaryDto();
+
+            ps.setString(1, dept_name);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                dto.setFull_name(rs.getString("full_name"));
+                dto.setAvg_salary(rs.getDouble("avg_salary"));
+
+                return dto;
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
