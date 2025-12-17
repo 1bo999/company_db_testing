@@ -21,6 +21,12 @@ public class EmployeeSalaryDto {
         this.to_date = to_date;
     }
 
+    public EmployeeSalaryDto(int emp_no, String full_name, int salary) {
+        this.emp_no = emp_no;
+        this.full_name = full_name;
+        this.salary = salary;
+    }
+
     public int getEmp_no() {
         return emp_no;
     }
