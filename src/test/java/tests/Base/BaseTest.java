@@ -1,9 +1,12 @@
 package tests.Base;
 
+import io.qameta.allure.testng.AllureTestNg;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +14,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
-
+@Listeners({AllureTestNg.class})
 public class BaseTest {
 
     private static final Logger log = LoggerFactory.getLogger(BaseTest.class);
