@@ -4,65 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Company Database – Test Automation Project</title>
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0 20px;
-    color: #333;
-}
-    h1, h2, h3 {
-        color: white;
-    }
-    h1 {
-        text-align: center;
-        margin-top: 20px;
-    }
-    .badges img {
-        margin: 5px 5px 10px 0;
-    }
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-bottom: 10px;
-    }
-    th, td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-    th {
-        background-color: #333;
-        color: #fff;
-    }
-    code {
-        background: #eee;
-        padding: 2px 6px;
-        border-radius: 2px;
-        font-size: 1.5em;
-    }
-    pre {
-        background: gre;
-        padding: 10px;
-        border-radius: 6px;
-        overflow-x: auto;
-    }
-    .contributors {
-        background: none;
-        padding: 1px;
-        border-radius: 10px;
-        margin-bottom: 5px;
-    }
-    .gif {
-        display: block;
-        max-width: 200px;
-        margin: 0 auto 30px;
-    }
-    section {
-        margin-bottom: 1px;
-    }
-</style>
 </head>
 <body>
 
